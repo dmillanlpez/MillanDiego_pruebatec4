@@ -111,8 +111,8 @@ public class HotelReservationController {
     }
 
     // BORRADO POR ID
-    @Operation(summary = "Delete a hotel reservation by ID",
-            description = "This method deletes a specific hotel reservation based on its ID.")
+    @Operation(summary = "Borra una reserva de un hotel por su ID",
+            description = "Este metodo permite borrar una reserva si se obtiene el ID. Devuelve diferentes codigos de respuesta HTTP dependiendo del resultado de la operacion.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Hotel reservation deleted successfully."),
             @ApiResponse(responseCode = "400", description = "Invalid request or no hotel reservation found with the given ID."),

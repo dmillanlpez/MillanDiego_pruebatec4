@@ -9,8 +9,13 @@ import com.hackaboss.AgenciaTurismo.model.User;
 import com.hackaboss.AgenciaTurismo.repository.HotelRepository;
 import com.hackaboss.AgenciaTurismo.repository.HotelReservationRepository;
 import com.hackaboss.AgenciaTurismo.repository.RoomRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -145,6 +150,8 @@ public class HotelReservationService implements IHotelReservationService {
             }
         }
     }
+
+
 
 
     @Override
