@@ -182,49 +182,64 @@ public class HotelReservationController {
     @PutMapping("/hotel-booking/edit/{id}")
     public ResponseEntity<?> editHotelReservation(@PathVariable String id, @RequestBody UpdHotelReservationDTO hotelReservationDTO) {
         try {
-            if (!id.matches("^\\d+$")) {
+            if (!id.matches("\\d+")) {
                 return ResponseEntity.badRequest().body(ERROR_CODE);
             }
-
             List<Room> rooms = roomService.getAllRooms();
 
-            Long reservationId = Long.parseLong(id);
+            Long bookingId = Long.parseLong(id);
 
-            // Obtengo los datos de la bbdd
-            int currNights = hotelReservationService.getAllReservations().get(0).getNights();
-            Double oPrice = hotelReservationService.getAllReservations().get(0).getPrice();
+            //Obtenemos los datos que hay en la base de datos antes de actualizar
+            int currentNights = hotelReservationService.getAllReservations().get(0).getNights();
+            Double originalPrice = hotelReservationService.getAllReservations().get(0).getPrice();
 
-            HotelReservation hotelReservation = hotelReservationService.updateReservationID(reservationId, hotelReservationDTO);
+            HotelReservation hotelReservation = hotelReservationService.updateReservationID(bookingId, hotelReservationDTO);
 
             LocalDate dateFrom = hotelReservationDTO.getDateFrom();
             LocalDate dateTo = hotelReservationDTO.getDateTo();
 
-            Period period = Period.between(dateFrom, dateTo);
-            int nights = period.getDays();
+            int nights = (int) ChronoUnit.DAYS.between(dateFrom, dateTo);
+
 
             double totalPrice = rooms.stream()
                     .filter(room -> room.getHotel().getCodHotel().equals(hotelReservation.getCodHotel()) &&
                             room.getRoomType().equalsIgnoreCase(hotelReservation.getRoomType()))
                     .mapToDouble(room -> nights * room.getRoomPrice())
-                    .sum();
+                    .findFirst()
+                    .orElse(0.0);
 
-            double updatePrice = nights < currNights ? oPrice - totalPrice :
-                    nights > currNights ? totalPrice - oPrice : 0.0;
+            // Calculos para el nuevo precio, a que las fechas seran diferentes
 
-            String message = "Reservation details not available." + '\n' +
-                    (nights < currNights ? "The amount of money to be returned to the client is: " :
-                            nights > currNights ? "The additional cost to pay is: " : "No changes in cost.") + updatePrice;
+            // Verficacion de las noches antes de realizar operaciones
+            if (nights < currentNights) {
+                double updatePrice = originalPrice - totalPrice;
+                String message = getReservationDetails(hotelReservation) + '\n' +
+                        "The amount of money to be returned to the client is: " + updatePrice;
+                return ResponseEntity.ok().body(message);
+            }
 
-            // Actualizacion de las noches y el precio
+            if (nights > currentNights) {
+                double updatePrice = totalPrice - originalPrice;
+                String message = getReservationDetails(hotelReservation) + '\n' +
+                        "The additional cost to pay is: " + updatePrice;
+                return ResponseEntity.ok().body(message);
+            }
+
+            // Actualización de las noches y el precio
             hotelReservation.setNights(nights);
             hotelReservation.setPrice(totalPrice);
 
+            String message = "Updated reservation: \n" + getReservationDetails(hotelReservation);
+
             return ResponseEntity.ok().body(message);
-        } catch (IllegalArgumentException e) {
+
+
+        } catch(IllegalArgumentException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
+    // Metodos validadores para los parametros de entrada del DTO.
 
     private String valitadeBookingDate(HotelReservationDTO hotelReservationDTO) {
 

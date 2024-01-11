@@ -9,12 +9,9 @@ import com.hackaboss.AgenciaTurismo.model.User;
 import com.hackaboss.AgenciaTurismo.repository.HotelRepository;
 import com.hackaboss.AgenciaTurismo.repository.HotelReservationRepository;
 import com.hackaboss.AgenciaTurismo.repository.RoomRepository;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
+
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -151,9 +148,6 @@ public class HotelReservationService implements IHotelReservationService {
         }
     }
 
-
-
-
     @Override
     public List <HotelReservation> getAllReservations() {
 
@@ -177,8 +171,39 @@ public class HotelReservationService implements IHotelReservationService {
     @Override
     public HotelReservation updateReservationID(Long id, UpdHotelReservationDTO updHotelReservationDTO) {
 
-        Optional<HotelReservation> opHotelReservation = hotelReservationRepository.findById(id);
-        return null;
+        Optional<HotelReservation> optionalHotelReservationhotelReservation = hotelReservationRepository.findById(id);
+
+        //Hacermos lo mismo que el eliminado pero en vez de eliminarlo para actualizarlo
+        if (optionalHotelReservationhotelReservation.isPresent()) {
+            HotelReservation hotelReservation = getHotelReservation(updHotelReservationDTO, optionalHotelReservationhotelReservation);
+
+            hotelReservation.setDateFrom(updHotelReservationDTO.getDateFrom());
+            hotelReservation.setDateTo(updHotelReservationDTO.getDateTo());
+
+
+            //Al cambiar las fechas entonces tendremos que cambiar tanto las noches y
+            // evidentemente también el precio
+
+            int nights = (int) ChronoUnit.DAYS.between(updHotelReservationDTO.getDateFrom(), updHotelReservationDTO.getDateTo());
+            hotelReservation.setNights(nights);
+
+            //Buscamos la reserva
+            List<Room> rooms = roomRepository.findAll();
+
+            //Aquí obtenemos el precio total de la habitación
+            double totalPrice = rooms.stream()
+                    .filter(room -> room.getHotel().getCodHotel().equals(hotelReservation.getCodHotel()) &&
+                            room.getRoomType().equalsIgnoreCase(hotelReservation.getRoomType()))
+                    .mapToDouble(room -> nights * room.getRoomPrice())
+                    .findFirst()
+                    .orElse(0.0);
+            hotelReservation.setPrice(totalPrice);
+
+
+            return hotelReservationRepository.save(hotelReservation);
+        }else {
+            throw new IllegalArgumentException("The hotel reservation does not exist");
+        }
     }
 
         @Override
@@ -217,9 +242,34 @@ public class HotelReservationService implements IHotelReservationService {
                 }
                 return hotelReservation;
             } else {
-                throw new IllegalArgumentException("The hotel reservation that you want to delete does not exist in the database.");
+                throw new IllegalArgumentException("The hotel is not found in our database.");
             }
         }
+
+    //Método para validar la fecha de la reserva y devolver un detalle de la actualización de la reserva del hotel
+    private static HotelReservation getHotelReservation(UpdHotelReservationDTO updHotelReservationDTO, Optional<HotelReservation> optionalHotelReservation) {
+        HotelReservation hotelReservation = optionalHotelReservation.get();
+
+        //verificamos las fechas si están dentro del rango de la habitación
+        if (updHotelReservationDTO.getDateFrom().isBefore(hotelReservation.getHotel().getRoom().getAvaliableDateFrom()) ||
+                updHotelReservationDTO.getDateTo().isAfter(hotelReservation.getHotel().getRoom().getAvaliableDateTo()) ||
+                updHotelReservationDTO.getDateTo().isBefore(hotelReservation.getHotel().getRoom().getAvaliableDateFrom())||
+                updHotelReservationDTO.getDateTo().isBefore(updHotelReservationDTO.getDateFrom())) {
+            throw new IllegalArgumentException("The reservation dates are not within the room's availability range or are not valid." +
+                    " The dates are:\n" +
+                    //Obtenemos las fechas de la habitación para mostrarle al usuario el rango de fechas que tiene la habitación
+                    "- From: " + updHotelReservationDTO.getDateFrom() +'\n' +
+                    "- To: " + updHotelReservationDTO.getDateTo()  + '\n' +
+                    "The dates you want to change are:\n" +
+                    "- From: " + hotelReservation.getDateFrom() + '\n' +
+                    "- To: " + hotelReservation.getDateTo() + '\n' );
+        }
+
+        if (hotelReservation.isDeleted()) {
+            throw new IllegalArgumentException("The reservation is not found in the database.");
+        }
+        return hotelReservation;
+    }
 }
 
 

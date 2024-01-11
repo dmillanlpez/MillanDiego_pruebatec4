@@ -98,13 +98,14 @@ public class FlightController {
     @DeleteMapping("/flights/{id}")
     public ResponseEntity<?> deleteFlightById(@PathVariable String id) {
         try {
-            if (!id.matches("^\\d+$")) {
-                return ResponseEntity.badRequest().body("Please enter a valid flight ID (numbers only)");
+            if (!id.matches("\\d+")) {
+                return ResponseEntity.badRequest().body("Please enter a valid hotel ID (numbers only)");
             }
-            Long flightIDDel = Long.valueOf(id);
+            Long flightID = Long.valueOf(id);
 
-            flightService.deleteFlightById(flightIDDel);
-            return ResponseEntity.ok().body("Flight deleted successfully");
+            Flight flight = flightService.getFlightById(flightID);
+
+            return ResponseEntity.ok().body(flight);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

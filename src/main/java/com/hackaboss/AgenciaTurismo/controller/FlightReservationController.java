@@ -122,9 +122,7 @@ public class FlightReservationController {
         if (!id.matches("^\\d+$")){
             return ResponseEntity.badRequest().body(ERROR_CODE);
         }
-
         Long flightId = Long.valueOf(id);
-
         try{
             flightReservationService.deleteFlightReservation(flightId);
             return ResponseEntity.ok().body("Flight reservation deleted successfully.");

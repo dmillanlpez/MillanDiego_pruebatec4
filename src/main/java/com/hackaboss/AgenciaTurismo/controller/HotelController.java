@@ -150,11 +150,12 @@ public class HotelController {
         }
     }
 
+
     // Variable para almacenar un cod error
     private static final String ERROR_CODE ="Please enter a valid hotel ID || Use only numbers please.";
 
 
-    // Validaciones usadas a la hora de crear un hotel
+    // Validaciones usadas a la hora de crear un hotel en el formato para la bbdd
     private void validateField(List<String> errors, String fieldName, String fieldValue, String regex) {
         if (fieldValue == null || fieldValue.isEmpty() || !fieldValue.matches(regex)) {
             errors.add(fieldName + " can only contains letters, try again.");
