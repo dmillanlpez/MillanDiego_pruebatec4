@@ -12,16 +12,16 @@ Esta aplicación simula una agencia de viajes en la cual se pueden crear hoteles
 
 ![image](https://github.com/dmillanlpez/MillanDiego_pruebatec4/assets/97486464/a54180d1-3d95-4e24-8f9c-777cec2c397a)
 
-En este endpoint se permite crear un hotel en la base de datos mediante la siguiente request.
-
+```json
 {
     "name": "Hotel Paraiso",
     "location": "Coruna",
     "roomPrice": 150.0,
     "roomType": "doble",
-    "avaliableDateFrom": "2024-05-15",
-    "avaliableDateTo": "2024-05-25"
+    "availableDateFrom": "2024-05-15",
+    "availableDateTo": "2024-05-25"
 }
+```
 
 Listar todos los hoteles 
 
