@@ -66,5 +66,37 @@ Este metodo nos permite eliminar un hotel de manera logica, en la base de datos 
 
 ## Vuelos 
 
+### Crear un nuevo vuelo.
 
+Este metodo se maneja la creacion del vuelo.
+```json
+{
+  "arrival": "Sada",
+  "departure": "Madrid",
+  "date": "2024-04-20"
+}
+```
+### Obtener todos los vuelos 
+
+Mediante este metodo vamos a obtener todos los vuelos que estan en la base de datos.
+
+```json
+  {
+        "id": 1,
+        "codFlight": "OL-2305",
+        "departure": "Barcelona",
+        "arrival": "Oleiros",
+        "date": "2024-04-07",
+        "lastUpdate": "2024-01-11",
+ {
+```
+
+## Obtener la lista de vuelos en funcion de lugar de destino, origen y fechas
+
+![image](https://github.com/dmillanlpez/MillanDiego_pruebatec4/assets/97486464/d4525d54-b0cb-4d20-bc5f-a4b0fc36eae5)
+
+Este metodo como se puede observar mediante unos filtros nos devuelve un vuelo con su id, el codigo del vuelo, origen, destino, la fecha...
+
+
+## Metodo para obtener los vuelos por id 
 
