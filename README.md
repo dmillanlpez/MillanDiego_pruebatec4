@@ -57,7 +57,7 @@ http://localhost:8080/agency/hotels
 
 En el caso de que no hubiese hoteles en la base de datos o estos estuviesen eliminados, tendríamos la siguiente respuesta:
 
--There are no active hotels in the database.
+>There are no active hotels in the database.
 
 ### Método GET (Listar los hoteles en un determinado rango de fechas, lugar y buscar por disponibilidad)
 ***
@@ -70,7 +70,7 @@ http://localhost:8080/agency/hotels/search?avaliableDateFrom=2024-05-10&avaliabl
 
 En el caso de que el hotel o los hoteles que estuviésemos buscando no estuviesen en las susodichas fechas, recibiríamos como respuesta lo siguiente:
 
--There are no hotels with these criteria in the database.
+>There are no hotels with these criteria in the database.
 
 ![get all false](media/get_all_hotels_location_FALSE.png)
 
@@ -85,7 +85,7 @@ http://localhost:8080/agency/hotels/1
 
 Si no encuentra un hotel, obtenemos la siguiente respuesta:
 
--The hotel with ID 2 does not exist in the database.
+>The hotel with ID 2 does not exist in the database.
 
 ### Método PUT. Actualizar el hotel.
 ***
@@ -94,7 +94,6 @@ En este método solo podemos actualizar el nombre o la localización del hotel. 
 
 ```json
 {
-
 "name": "Hotel Betanzos",
 "location": "Betanzos"
 }
@@ -103,7 +102,7 @@ Si todo ha salido correcto, aparte de actualizarse el nombre y la localización,
 
 Si el hotel que intentamos actualizar no se encuentra en la base de datos, nos marcará el siguiente error:
 
-Hotel not found in the database.
+>Hotel not found in the database.
 
 ### Método DELETE
 ***
@@ -115,7 +114,7 @@ Este método se encarga de hacer un borrado lógico, en la base de datos se encu
 
 En el caso de que intentemos borrar un hotel que no se encuentra en la base de datos, obtendremos el siguiente error:
 
--The hotel with ID 3 was not found in the database.
+>The hotel with ID 3 was not found in the database.
 
 ## Vuelos
 ****
@@ -131,7 +130,6 @@ http://localhost:8080/agency/flight/new
 
 ```json
 {
-
 "arrival": "Sada",
 "departure": "Madrid",
 "date": "2024-05-24"
@@ -173,7 +171,6 @@ En este método obtenemos los vuelos mediante un rango de fechas, origen, destin
 http://localhost:8080/agency/flights/search?avaliableDateFrom=2024-05-24&avaliableDateTo=2024-05-25&arrival=Sada&departure=Madrid
 
 ```json
-
 [
 {
 "id": 1,
@@ -191,7 +188,7 @@ http://localhost:8080/agency/flights/search?avaliableDateFrom=2024-05-20&avaliab
 
 Y si es incorrecto, obtenemos la respuesta indicándonos que está mal:
 
-No flights match the specified criteria in the database.
+>No flights match the specified criteria in the database.
 
 ### Método GET(método para obtener los vuelos por ID)
 ***
@@ -200,7 +197,7 @@ En este caso obtenemos un vuelo mediante su ID. En el caso de no encontrar un vu
 
 http://localhost:8080/agency/flights/{id}
 
-Flight with ID 12 not found in the database.
+>Flight with ID 12 not found in the database.
 
 ### Método PUT(Método para actualizar los vuelos)
 ***
@@ -208,7 +205,6 @@ Flight with ID 12 not found in the database.
 En este método lo que vamos a hacer es actualizar los vuelos, en este caso lo que vamos a actualizar es:
 
 ```json
-
 {
 "arrival": "Sada",
 "departure": "Madrid",
@@ -219,7 +215,7 @@ Y como podemos comprobar mediante él antes y él después, los datos han sido a
 
 De nuevo, si se intenta actualizar un vuelo inexistente, obtendremos como respuesta la siguiente response:
 
-Flight with ID 3 not found in the database.
+>Flight with ID 3 not found in the database.
 
 ### Método DELETE(Método para eliminar los vuelos)
 ***
@@ -234,11 +230,11 @@ http://localhost:8080/agency/flights/{id}
 
 Si todo ha salido correcto, la respuesta que obtendremos será la siguiente:
 
-Flight deleted
+>Flight deleted
 
 En el caso de que intentemos borrar un vuelo que no se encuentra en la base de datos, la siguiente response:
 
-The flight is not found in the database.
+>The flight is not found in the database.
 
 ## Reserva de vuelos
 ****
@@ -275,7 +271,7 @@ El precio en este caso se estipula que es de 60 euros, pero más adelante veremo
 
 Podemos hacer una reserva del mismo vuelo, pero con otra persona diferente, en el caso de que volvamos a ejecutar el mismo JSON obtendremos el siguiente mensaje:
 
-At least one user already has an active reservation for the specified flight on the specified date.
+>At least one user already has an active reservation for the specified flight on the specified date.
 
 ### Método GET (devuelve todas las reservas)
 ***
@@ -333,7 +329,7 @@ http://localhost:8080/agency/flight-booking/get/{id}
 
 En el caso de que intentemos buscar por un ID que no se encuentre en la base de datos, obtendremos el siguiente error:
 
-The flight reservation with ID 2 is not found in the database.
+>The flight reservation with ID 2 is not found in the database.
 
 ### Método PUT (método para actualizar a través del ID)
 ***
@@ -361,7 +357,7 @@ Este cambio se realiza mediante el siguiente JSON:
 
 La respuesta que obtenemos si ponemos el "seatType" incorrecto es la siguiente:
 
-Invalid seat type. Choose between 'Economy' and 'Premium'.
+>Invalid seat type. Choose between 'Economy' and 'Premium'.
 
 ### Método DELETE (método para eliminar un vuelo)
 ***
@@ -372,7 +368,7 @@ Es prácticamente idéntica a la hora de borrar un vuelo o un hotel. Simplemente
 
 Si el ID no existe en la BBDD obtenemos la siguiente response:
 
-The flight reservation with ID 3 is not found in the database.
+>The flight reservation with ID 3 is not found in the database.
 
 ## Reserva de Hoteles
 ***
@@ -385,15 +381,15 @@ En este método igual que anteriormente también se crea el usuario, en caso de 
 
 En el caso de que la habitación del hotel no concuerde con la habitación a la hora de hacer una reserva, obtendremos el error:
 
-The specified room for the reservation was not found.
+>The specified room for the reservation was not found.
 
 Para crear una reserva debemos obtener el código del hotel correcto, en caso de que no sea el correcto obtendremos el siguiente error:
 
-The specified hotel does not exist or has been deleted.
+>The specified hotel does not exist or has been deleted.
 
 En el caso de que sea todo correcto, obtendremos la siguiente response:
 
-The total price of the reservation is: 480.0 € (Un cálculo del precio de la habitación por el número de días que la persona se va a alojar en ella).
+>The total price of the reservation is: 480.0 € (Un cálculo del precio de la habitación por el número de días que la persona se va a alojar en ella).
 
 Tenemos tres tipos de habitaciones principales (Individual, Doble o Triple).
 
@@ -506,7 +502,7 @@ Este método es idéntico al de la reserva de vuelos, por ende vamos a pasar dir
 
 Si la reserva no existe, vamos a obtener el siguiente error:
 
-The reservation with ID 2 does not exist in our database.
+>The reservation with ID 2 does not exist in our database.
 
 ## Método GET (Obtener todas las reservas)
 ***
@@ -535,7 +531,7 @@ Eliminación de una reserva:
 
 En el caso de que estemos intentando borrar una reserva de un hotel que no se encuentre en la base de datos, obtendremos la siguiente respuesta:
 
-The reservation with ID 2 does not exist in the database.
+>The reservation with ID 2 does not exist in the database.
 
 ## Posibles mejoras para Sprints futuros
 ***
