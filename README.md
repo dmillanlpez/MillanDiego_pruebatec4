@@ -87,14 +87,13 @@ Si no encuentra un hotel, obtenemos la siguiente respuesta:
 
 En este método solo podemos actualizar el nombre o la localización del hotel. La actualización se realiza a través del ID del hotel
 
-'''json
+```json
 {
 
 "name": "Hotel Betanzos",
 "location": "Betanzos"
 }
-
-'''
+```
 Si todo ha salido correcto, aparte de actualizarse el nombre y la localización, también se actualizará el código alfanumérico del hotel
 
 Si el hotel que intentamos actualizar no se encuentra en la base de datos, nos marcará el siguiente error:
@@ -126,15 +125,14 @@ Debido a que los endpoints son prácticamente los mismos a los de los hoteles, s
 
 Este método permite la creación de un vuelo, simplemente se ingresan los diferentes parámetros mediante el JSON.
 
-'''json
+```json
 {
 
 "arrival": "Sada",
 "departure": "Madrid",
 "date": "2024-05-24"
 }
-'''
-
+```
 Hago el vuelo de una manera para que concuerde con el hotel creado anteriormente.
 
 La respuesta de este endpoint es la siguiente:
@@ -148,7 +146,7 @@ http://localhost:8080/agency/flights
 
 Mediante este método obtenemos todos los vuelos que se encuentran disponibles en la base de datos.
 
-'''json
+```json
 [
 {
 "id": 1,
@@ -160,7 +158,7 @@ Mediante este método obtenemos todos los vuelos que se encuentran disponibles e
 "deleted": false
 }
 ]
-'''
+```
 
 En este caso solo se encuentra un vuelo en la base de datos.
 
@@ -171,7 +169,8 @@ En este método obtenemos los vuelos mediante un rango de fechas, origen, destin
 
 http://localhost:8080/agency/flights/search?avaliableDateFrom=2024-05-24&avaliableDateTo=2024-05-25&arrival=Sada&departure=Madrid
 
-'''json
+```json
+
 [
 {
 "id": 1,
@@ -183,7 +182,7 @@ http://localhost:8080/agency/flights/search?avaliableDateFrom=2024-05-24&avaliab
 "deleted": false
 }
 ]
-'''
+```
 
 http://localhost:8080/agency/flights/search?avaliableDateFrom=2024-05-20&avaliableDateTo=2024-05-25&arrival=Coruna&departure=Madrid
 
@@ -204,13 +203,14 @@ Flight with ID 12 not found in the database.
 ***
 En este método lo que vamos a hacer es actualizar los vuelos, en este caso lo que vamos a actualizar es:
 
-'''json
+```json
+
 {
 "arrival": "Sada",
 "departure": "Madrid",
 "date": "2024-04-24"
 }
-'''
+```
 Y como podemos comprobar mediante él antes y él después, los datos han sido actualizados sin ningún problema.
 
 De nuevo, si se intenta actualizar un vuelo inexistente, obtendremos como respuesta la siguiente response:
@@ -248,7 +248,8 @@ El funcionamiento de la resserva de vuelos es muy parecido a lo que llevamos hec
 
 http://localhost:8080/agency/flight-booking/new
 
-'''json
+```json
+
 {
 "date": "2024-04-24",
 "departure": "Madrid",
@@ -266,7 +267,7 @@ http://localhost:8080/agency/flight-booking/new
 }
 ]
 }
-'''
+```
 El precio en este caso se estipula que es de 60 euros, pero más adelante veremos que "Economy = 60 euros" y "Premium = 120 euros".
 
 Podemos hacer una reserva del mismo vuelo, pero con otra persona diferente, en el caso de que volvamos a ejecutar el mismo JSON obtendremos el siguiente mensaje:
@@ -280,7 +281,7 @@ http://localhost:8080/agency/flight-booking/all
 
 En este caso, las reservas solo podrán ser vistas por el empleado autenticado, no por un usuario normal. La response que obtenemos es la siguiente:
 
-'''json
+```json
 [
 {
 "id": 1,
@@ -318,7 +319,8 @@ En este caso, las reservas solo podrán ser vistas por el empleado autenticado, 
 "deleted": false
 }
 ]
-'''
+```
+
 ### Método GET (este método nos devuelve la reserva por ID)
 ***
 
@@ -348,10 +350,11 @@ Ahora la tabla actualizada:
 
 Este cambio se realiza mediante el siguiente JSON:
 
-'''json
+```json
 {
 "seatType": "Premium"
 }
+```
 
 La respuesta que obtenemos si ponemos el "seatType" incorrecto es la siguiente:
 
@@ -393,7 +396,7 @@ Tenemos tres tipos de habitaciones principales (Individual, Doble o Triple).
 
 Request usada a la hora de la creacion de la reserva:
 
-'''json
+```json
 {
 "dateFrom":"2024-05-24",
 "dateTo": "2024-05-30",
@@ -410,15 +413,14 @@ Request usada a la hora de la creacion de la reserva:
 }
 ]
 }
-'''
+```
 
 ### Método GET (Obtener las reservas por el ID)
 ***
 
 Este método es idéntico al de la reserva de vuelos, por ende vamos a pasar directamente a la respuesta del JSON:
 
-'''json
-
+```json
 "id": 1,
 "codHotel": "HOAL-4213",
 "dateFrom": "2024-05-24",
@@ -497,7 +499,7 @@ Este método es idéntico al de la reserva de vuelos, por ende vamos a pasar dir
 "updated": null,
 "deleted": false
 }
-'''
+```
 
 Si la reserva no existe, vamos a obtener el siguiente error:
 
@@ -514,12 +516,12 @@ Gracias a este método obtendremos todas las reservas que se encuentran en la ba
 Mediante este método vamos a actualizar la información de la reserva, aquí podremos editar dos datos principales, la fecha de inicio y la fecha final
 
 Request:
-'''json
+```json
 {
 "dateFrom": "2024-04-10",
 "dateTo": "2024-04-20"
 }
-'''
+```
 
 ### Método DELETE (Eliminar reserva)
 ***
