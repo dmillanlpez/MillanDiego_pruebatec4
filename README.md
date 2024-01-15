@@ -371,7 +371,7 @@ La respuesta que obtenemos si ponemos el "seatType" incorrecto es la siguiente:
 
 >Invalid seat type. Choose between 'Economy' and 'Premium'.
 
-### Método DELETE (método para eliminar un vuelo)
+### Método DELETE (método para eliminar la reserva de un vuelo)
 ***
 
 Es prácticamente idéntica a la hora de borrar un vuelo o un hotel. Simplemente, buscaremos por el ID correspondiente y le daremos a eliminar.
