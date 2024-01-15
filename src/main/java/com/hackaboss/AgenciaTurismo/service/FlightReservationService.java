@@ -166,11 +166,11 @@ public class FlightReservationService implements IFlightReservationService {
                 throw new IllegalArgumentException("Invalid seat type. Choose between 'Economy' and 'Premium'.");
             }
 
-            // Automatically set the price based on seatType
+            // Cambia el precio automaticamente dependiendo del tipo de asiento
             if ("Premium".equalsIgnoreCase(seatType)) {
                 flightReservation.setPrice(120.0);
             } else {
-                // Set price to 60 for Economy
+                // Precio min para economy de 60 euros
                 flightReservation.setPrice(60.0);
             }
 
