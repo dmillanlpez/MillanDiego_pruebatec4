@@ -223,6 +223,7 @@ Despues
 
 ![delete vuelo](media/after_flight_update.png)
 
+Como podemos observar se ha cambiado el mes, en la primera imagen observamos que es Mayo y en la segunda el mes es Abril.
 
 De nuevo, si se intenta actualizar un vuelo inexistente, obtendremos como respuesta la siguiente response:
 
