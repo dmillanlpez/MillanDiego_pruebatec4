@@ -226,7 +226,7 @@ http://localhost:8080/agency/flights/{id}
 
 ![delete vuelo](media/delete_VUELO.png)
 
-![delete vuelo](media/after_flight_update.png)
+![delete vuelo](media/flight_deleted.png)
 
 Si todo ha salido correcto, la respuesta que obtendremos será la siguiente:
 
