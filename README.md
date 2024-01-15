@@ -18,9 +18,10 @@ Explicación de cada uno de los endpoints de la aplicación
 
 ### Método POST (Este método tiene que estar autenticado el empleado)
 ***
-![create_hotel](media/new_hotel.png)
 
 http://localhost:8080/agency/hotels/new
+
+![create_hotel](media/new_hotel.png)
 
 En este endpoint se van a generar todos los hoteles mediante la siguiente request:
 
@@ -46,9 +47,10 @@ La response de la request anterior es la siguiente:
 
 Este método nos permite observar todos los hoteles y aparte ver cuáles están o no reservados.
 
+http://localhost:8080/agency/hotels
+
 ![get all hoteles](media/get_all_hotels.png)
 
-http://localhost:8080/agency/hotels
 
 En el caso de que no hubiese hoteles en la base de datos o estos estuviesen eliminados, tendríamos la siguiente respuesta:
 
@@ -104,10 +106,9 @@ Hotel not found in the database.
 ***
 
 http://localhost:8080/agency/hotels/1
+Este método se encarga de hacer un borrado lógico, en la base de datos se encuentran dos columnas, una llamada (is_Deleted) y (last_deleted_date), en las cuales mediante una flag (0 - 1) nos permiten observar si el hotel se encuentra borrado o no. Para eliminar un hotel se hace mediante su ID. En el caso de que un hotel tenga una reserva, este no va a poder ser eliminado hasta que se elimine primero la reserva.
 
 ![borrado por id](media/Delete_hotel_ID.png)
-
-Este método se encarga de hacer un borrado lógico, en la base de datos se encuentran dos columnas, una llamada (is_Deleted) y (last_deleted_date), en las cuales mediante una flag (0 - 1) nos permiten observar si el hotel se encuentra borrado o no. Para eliminar un hotel se hace mediante su ID. En el caso de que un hotel tenga una reserva, este no va a poder ser eliminado hasta que se elimine primero la reserva.
 
 En el caso de que intentemos borrar un hotel que no se encuentra en la base de datos, obtendremos el siguiente error:
 
@@ -121,9 +122,9 @@ Debido a que los endpoints son prácticamente los mismos a los de los hoteles, s
 ### Método POST (Creación de vuelo).
 ***
 
--http://localhost:8080/agency/flight/new
-
 Este método permite la creación de un vuelo, simplemente se ingresan los diferentes parámetros mediante el JSON.
+
+http://localhost:8080/agency/flight/new
 
 ```json
 {
@@ -141,10 +142,9 @@ Successfully created flight
 
 ### Método GET (obtener la lista de todos los vuelos)
 ***
+Mediante este método obtenemos todos los vuelos que se encuentran disponibles en la base de datos.
 
 http://localhost:8080/agency/flights
-
-Mediante este método obtenemos todos los vuelos que se encuentran disponibles en la base de datos.
 
 ```json
 [
@@ -193,14 +193,15 @@ No flights match the specified criteria in the database.
 ### Método GET(método para obtener los vuelos por ID)
 ***
 
-http://localhost:8080/agency/flights/{id}
-
 En este caso obtenemos un vuelo mediante su ID. En el caso de no encontrar un vuelo por su correspondiente ID obtenemos la siguiente response:
+
+http://localhost:8080/agency/flights/{id}
 
 Flight with ID 12 not found in the database.
 
 ### Método PUT(Método para actualizar los vuelos)
 ***
+
 En este método lo que vamos a hacer es actualizar los vuelos, en este caso lo que vamos a actualizar es:
 
 ```json
@@ -220,13 +221,13 @@ Flight with ID 3 not found in the database.
 ### Método DELETE(Método para eliminar los vuelos)
 ***
 
+Este método se encarga de hacer un borrado lógico, en la base de datos se encuentran dos columnas, una llamada (is_Deleted) y (last_deleted_date), en las cuales mediante una flag (0 - 1) nos permiten observar si el hotel se encuentra borrado o no. Para eliminar un vuelo se hace mediante su ID. En el caso de que un vuelo tenga una reserva, este no va a poder ser eliminado hasta que se elimine primero la reserva.
+
 http://localhost:8080/agency/flights/{id}
 
 ![delete vuelo](media/delete_VUELO.png)
 
 ![delete vuelo](media/after_flight_update.png)
-
-Este método se encarga de hacer un borrado lógico, en la base de datos se encuentran dos columnas, una llamada (is_Deleted) y (last_deleted_date), en las cuales mediante una flag (0 - 1) nos permiten observar si el hotel se encuentra borrado o no. Para eliminar un vuelo se hace mediante su ID. En el caso de que un vuelo tenga una reserva, este no va a poder ser eliminado hasta que se elimine primero la reserva.
 
 Si todo ha salido correcto, la respuesta que obtendremos será la siguiente:
 
@@ -249,7 +250,6 @@ El funcionamiento de la resserva de vuelos es muy parecido a lo que llevamos hec
 http://localhost:8080/agency/flight-booking/new
 
 ```json
-
 {
 "date": "2024-04-24",
 "departure": "Madrid",
@@ -277,9 +277,9 @@ At least one user already has an active reservation for the specified flight on 
 ### Método GET (devuelve todas las reservas)
 ***
 
-http://localhost:8080/agency/flight-booking/all
-
 En este caso, las reservas solo podrán ser vistas por el empleado autenticado, no por un usuario normal. La response que obtenemos es la siguiente:
+
+http://localhost:8080/agency/flight-booking/all
 
 ```json
 [
@@ -324,9 +324,9 @@ En este caso, las reservas solo podrán ser vistas por el empleado autenticado, 
 ### Método GET (este método nos devuelve la reserva por ID)
 ***
 
-http://localhost:8080/agency/flight-booking/get/{id}
-
 En este se va a buscar una reserva, y como podemos observar se va a realizar mediante un ID.
+
+http://localhost:8080/agency/flight-booking/get/{id}
 
 En el caso de que intentemos buscar por un ID que no se encuentre en la base de datos, obtendremos el siguiente error:
 
