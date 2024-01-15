@@ -46,7 +46,7 @@ La response de la request anterior es la siguiente:
 
 Este método nos permite observar todos los hoteles y aparte ver cuáles están o no reservados.
 
-![create_hotel](media/get_all_hotels.png)
+![get all hoteles](media/get_all_hotels.png)
 
 http://localhost:8080/agency/hotels
 
@@ -61,13 +61,13 @@ Este método nos permite devolver hoteles mediante un rango de fechas, lugar y b
 
 http://localhost:8080/agency/hotels/search?avaliableDateFrom=2024-05-10&avaliableDateTo=2024-05-30&location=Sada&isBooked=false
 
-![create_hotel](get_all_hotels_location_fecha.png)
+![get all filtro](get_all_hotels_location_fecha.png)
 
 En el caso de que el hotel o los hoteles que estuviésemos buscando no estuviesen en las susodichas fechas, recibiríamos como respuesta lo siguiente:
 
 -There are no hotels with these criteria in the database.
 
-![create_hotel](get_all_hotels_location_FALSE.png)
+![get all false](get_all_hotels_location_FALSE.png)
 
 ### Método GET por ID.
 ***
@@ -76,7 +76,7 @@ Este método simplemente busca hoteles por el ID, en el caso de que no encuentre
 
 http://localhost:8080/agency/hotels/1
 
-![create_hotel](get_hotel_ID.png)
+![get por id](get_hotel_ID.png)
 
 Si no encuentra un hotel, obtenemos la siguiente respuesta:
 
@@ -106,7 +106,7 @@ Hotel not found in the database.
 
 http://localhost:8080/agency/hotels/1
 
-![create_hotel](Delete_hotel_ID.png)
+![borrado por id](Delete_hotel_ID.png)
 
 Este método se encarga de hacer un borrado lógico, en la base de datos se encuentran dos columnas, una llamada (is_Deleted) y (last_deleted_date), en las cuales mediante una flag (0 - 1) nos permiten observar si el hotel se encuentra borrado o no. Para eliminar un hotel se hace mediante su ID. En el caso de que un hotel tenga una reserva, este no va a poder ser eliminado hasta que se elimine primero la reserva.
 
