@@ -66,6 +66,7 @@ http://localhost:8080/agency/hotels/search?avaliableDateFrom=2024-05-10&avaliabl
 En el caso de que el hotel o los hoteles que estuviésemos buscando no estuviesen en las susodichas fechas, recibiríamos como respuesta lo siguiente:
 
 -There are no hotels with these criteria in the database.
+
 ![create_hotel](get_all_hotels_location_FALSE.png)
 
 ### Método GET por ID.
