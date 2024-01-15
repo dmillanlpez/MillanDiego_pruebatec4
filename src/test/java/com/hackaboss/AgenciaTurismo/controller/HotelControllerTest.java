@@ -1,7 +1,6 @@
 package com.hackaboss.AgenciaTurismo.controller;
 
 import com.hackaboss.AgenciaTurismo.DTO.HotelDTO;
-import com.hackaboss.AgenciaTurismo.model.Hotel;
 import com.hackaboss.AgenciaTurismo.model.Room;
 import com.hackaboss.AgenciaTurismo.service.IHotelService;
 import org.junit.jupiter.api.Test;
@@ -9,12 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import java.time.LocalDate;
 import java.util.Collections;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 
 
 @SpringBootTest

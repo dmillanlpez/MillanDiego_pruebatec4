@@ -9,7 +9,6 @@ import com.hackaboss.AgenciaTurismo.repository.HotelRepository;
 import com.hackaboss.AgenciaTurismo.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -79,70 +78,73 @@ public class HotelService implements IHotelService {
 
     @Override
     public List<Hotel> getAllHotels() {
-
         List<Hotel> hotels = hotelRepository.findAll();
 
+        // Verificar si hay algun hotel inactivo en la lista
         boolean anyInactiveHotel = hotels.stream().anyMatch(hotel -> !hotel.isDeleted());
 
         if (anyInactiveHotel) {
+            // Filtrar la lista para incluir solo hoteles no eliminados
             return hotels.stream()
                     .filter(hotel -> !hotel.isDeleted())
                     .collect(Collectors.toList());
         } else {
-            throw new IllegalArgumentException("There are no inactive hotels in the database.");
+            // En caso de no haber hoteles no eliminados, lanzar una excepcion
+            throw new IllegalArgumentException("There are no active hotels in the database.");
         }
-
     }
+
 
     @Override
     public void deleteHotelById(Long id) {
-        // Busco el hotel por su ID en la base de datos
+        // Buscar el hotel por su ID en la base de datos
         Optional<Hotel> optionalHotel = hotelRepository.findById(id);
 
-        // Verifico si el hotel con el ID proporcionado existe en la base de datos
+        // Verificar si el hotel con el ID proporcionado existe en la base de datos
         if (optionalHotel.isEmpty()) {
-            throw new IllegalArgumentException("The hotel is not found in the database.");
+            throw new IllegalArgumentException("The hotel with ID " + id + " was not found in the database.");
         }
 
-        // Obtengo el hotel si se encuentra presente en la base de datos
+        // Obtener el hotel si se encuentra presente en la base de datos
         Hotel hotel = optionalHotel.get();
 
-        // Verifico si el hotel se encuentra marcado como eliminado en la base de datos
+        // Verificar si el hotel esta marcado como eliminado en la base de datos
         if (hotel.isDeleted()) {
-            throw new IllegalArgumentException("The hotel that you are trying to delete is already deleted or is not found.");
+            throw new IllegalArgumentException("The hotel with ID " + id + " is already deleted or not found.");
         }
 
-        // Verifico si el hotel se encuentra reservado
+        // Verificar si el hotel esta reservado
         if (hotel.isBooked()) {
-            // Verifico si el hotel tiene alguna reserva marcada como eliminada
+            // Verificar si el hotel tiene alguna reserva marcada como eliminada
             if (!hotel.getHotelReservations().isEmpty() && hotel.getHotelReservations().stream().anyMatch(HotelReservation::isDeleted)) {
-                // Si tiene una reserva con deleted(t) marcado y se encuentra reservado, se marcara como eliminado
+                // Si tiene una reserva con deleted(t) marcado y esta reservado, se marcara como eliminado
                 hotel.setDeleted(true);
                 hotel.setLastUpdate(LocalDate.now());
                 hotelRepository.save(hotel);
             } else {
-                throw new IllegalArgumentException("The hotel has a reservation.");
+                throw new IllegalArgumentException("The hotel with ID " + id + " has an active reservation and cannot be deleted.");
             }
         } else {
-            // En caso de nor estar marcado ocmo reservado, se procede a borrar el hotel
+            // En caso de no estar marcado como reservado, se procede a marcar el hotel como eliminado
             hotel.setDeleted(true);
             hotel.setLastUpdate(LocalDate.now());
             hotelRepository.save(hotel);
         }
     }
 
+
     // Edita un hotel por su ID en la base de datos
     @Override
     public Hotel editHotelById(Long id, UpdHotelDTO hotelDTO) {
         Optional<Hotel> opHotel = hotelRepository.findById(id);
-        Hotel hotel = opHotel.orElseThrow(() -> new IllegalArgumentException("The hotel is not found in the database."));
+        Hotel hotel = opHotel.orElseThrow(() -> new IllegalArgumentException("Hotel not found in the database."));
 
         if (hotel.isDeleted()) {
-            throw new IllegalArgumentException("The hotel is not found in the database.");
+            throw new IllegalArgumentException("The hotel is marked as deleted in the database.");
         }
 
         if (hotel.isBooked()) {
-            throw new IllegalArgumentException("The hotel has a reservation.");
+            throw new IllegalArgumentException("The hotel has an active reservation and cannot be edited.");
         }
 
         hotel.setHotelName(hotelDTO.getName());
@@ -158,22 +160,23 @@ public class HotelService implements IHotelService {
         // Buscar el hotel por su ID en la base de datos
         Optional<Hotel> optionalHotel = hotelRepository.findById(id);
 
-        // Verifico si el hotel con el ID proporcionado existe en la base de datos
+        // Verificar si el hotel con el ID proporcionado existe en la base de datos
         if (optionalHotel.isPresent()) {
 
-            // Obtengo el hotel si se encuentra presente en la base de datos
+            // Obtener el hotel si se encuentra presente en la base de datos
             Hotel hotel = optionalHotel.get();
 
-            // Verifico si el hotel se encuentra marcado como eliminado en la base de datos
+            // Verificar si el hotel está marcado como eliminado en la base de datos
             if (hotel.isDeleted()) {
-                throw new IllegalArgumentException("The hotel is not found in the database.");
+                throw new IllegalArgumentException("The hotel with ID " + id + " has been deleted in the database.");
             }
-            // Retorno el hotel encontrado por su id
-            return hotelRepository.findById(id).orElse(null);
+            // Retornar el hotel encontrado por su ID
+            return hotel;
         }
-        // En caso de no encontrar el hotel en la base de datos se lanza una excepcion con el mensaje de error
-        throw new IllegalArgumentException("The hotel with ID " + id + " is not found in the database.");
+        // En caso de no encontrar el hotel en la base de datos, lanzar una excepción con un mensaje descriptivo
+        throw new IllegalArgumentException("The hotel with ID " + id + " does not exist in the database.");
     }
+
     // Metodos que genera un codigo aleatorio para el hotel
     // Generar Codigo del hotel
     private String generateHotelCode(String hotelName) {

@@ -2,7 +2,6 @@ package com.hackaboss.AgenciaTurismo.service;
 
 import com.hackaboss.AgenciaTurismo.DTO.FlightDTO;
 import com.hackaboss.AgenciaTurismo.model.Flight;
-
 import java.time.LocalDate;
 import java.util.List;
 

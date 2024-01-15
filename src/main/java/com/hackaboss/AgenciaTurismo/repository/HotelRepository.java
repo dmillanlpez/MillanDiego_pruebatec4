@@ -14,13 +14,17 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
     Hotel findHotelByCodHotel(String codHotel);
 
 
-    @Query("SELECT  h " +
+    @Query("SELECT h " +
             "FROM Hotel h " +
             "JOIN h.room r " +
             "WHERE h.location = :location " +
-            "  AND h.isBooked = :isBooked " +
-            "  AND r.avaliableDateFrom BETWEEN :avaliableDateFrom AND :avaliableDateTo")
+            "AND h.isBooked = :isBooked " +
+            "AND ((r.avaliableDateFrom BETWEEN :avaliableDateFrom AND :avaliableDateTo) " +
+            "   OR (r.avaliableDateTo BETWEEN :avaliableDateFrom AND :avaliableDateTo) " +
+            "   OR (:avaliableDateFrom BETWEEN r.avaliableDateFrom AND r.avaliableDateTo) " +
+            "   OR (:avaliableDateTo BETWEEN r.avaliableDateFrom AND r.avaliableDateTo))")
     List<Hotel> getHotels(LocalDate avaliableDateFrom, LocalDate avaliableDateTo, String location, boolean isBooked);
+
 
     // booked solo generar error?
 

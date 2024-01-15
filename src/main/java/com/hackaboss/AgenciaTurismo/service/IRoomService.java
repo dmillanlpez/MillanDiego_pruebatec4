@@ -1,7 +1,6 @@
 package com.hackaboss.AgenciaTurismo.service;
 
 import com.hackaboss.AgenciaTurismo.model.Room;
-
 import java.util.List;
 
 public interface IRoomService {

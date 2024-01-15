@@ -1,5 +1,6 @@
 package com.hackaboss.AgenciaTurismo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,11 +35,12 @@ public class Hotel {
     @Column(name = "isBooked")
     private boolean isBooked; // la palabra booked genera conflicto si esta sola? revisar futuro
 
-    @Column(name = "last_deleted_date")
-    private LocalDate lastUpdate;
-
+    @JsonIgnore
     @Column(name = "is_deleted")
     private boolean isDeleted;
+
+    @Column(name = "last_deleted_date")
+    private LocalDate lastUpdate;
 
     // Relacionamientos
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)

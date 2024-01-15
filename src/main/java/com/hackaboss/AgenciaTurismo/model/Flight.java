@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@JsonIgnoreProperties({"flightReservation"})
+@JsonIgnoreProperties({"flightReservations"})
 public class Flight {
 
     // Atributos

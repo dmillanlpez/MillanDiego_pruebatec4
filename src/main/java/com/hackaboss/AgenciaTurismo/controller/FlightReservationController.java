@@ -29,24 +29,21 @@ public class FlightReservationController {
     private static final String INVALID_USER_EMAIL = "Invalid user email";
     private static final String INVALID_USER_PASSPORT = "Invalid user passport";
     private static final String INVALID_USER_AGE = "Invalid user age";
-    private static final String ERROR_ORIGIN_DESTINATION = "correctly write the origin and/or destination of flight.";
-    private static final String ERROR_COINCIDENCE_FLIGHTS = "the origin and destination do not match the flight";
-    private static final String DATE_ERROR = "Error: Disponibility start date must be before end date.";
     private static final String ERROR_CODE_NULL = "Flight code is required";
     private static final String ERROR_SEATTYPE_ERROR = "Error: Seat type does not match.";
 
     @Autowired
     private IFlightReservationService flightReservationService;
 
-
     @Operation(summary = "Crea una reserva de vuelo",
             description = "Este metodo maneja la creacion de una reserva de vuelo. Devuelve diferentes codigos de respuesta HTTP dependiendo del resultado de la operacion.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Flight reservation created successfully."),
             @ApiResponse(responseCode = "400", description = "Invalid book flight data"),
-            @ApiResponse(responseCode = "500", description = "Server error")})
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @PostMapping("/flight-booking/new")
-    public ResponseEntity<?> createBookFlight(@RequestBody FlightReservationDTO flightReservationDTO) {
+    public ResponseEntity < ? > createBookFlight(@RequestBody FlightReservationDTO flightReservationDTO) {
         try {
             String validationResult = validator(flightReservationDTO);
             if (validationResult != null) {
@@ -69,13 +66,14 @@ public class FlightReservationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of all flight reservations."),
             @ApiResponse(responseCode = "400", description = "Invalid request or no flight reservations found."),
-            @ApiResponse(responseCode = "500", description = "Server error")})
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @GetMapping("/flight-booking/all")
-    public ResponseEntity<?> getAllBookFlights() {
-        try{
-            List<FlightReservation> flightReservations = flightReservationService.getAllFlightReservations();
+    public ResponseEntity < ? > getAllBookFlights() {
+        try {
+            List < FlightReservation > flightReservations = flightReservationService.getAllFlightReservations();
             return ResponseEntity.ok().body(flightReservations);
-        }catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -84,24 +82,24 @@ public class FlightReservationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Flight reservation updated successfully."),
             @ApiResponse(responseCode = "400", description = "Invalid flight data"),
-            @ApiResponse(responseCode = "500", description = "Server error")})
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @PutMapping("/flight-booking/edit/{id}")
-    public ResponseEntity<?> editFlightReservation(@PathVariable String id, @RequestBody UpdFlightReservationDTO updFlightReservationDTO) {
+    public ResponseEntity < ? > editFlightReservation(@PathVariable String id, @RequestBody UpdFlightReservationDTO updFlightReservationDTO) {
         try {
-            if (!id.matches("^\\d+$")) {
+            if (!id.matches("\\d+")) {
                 return ResponseEntity.badRequest().body(ERROR_CODE);
             }
 
-            Long reservationFlightId = Long.valueOf(id);
+            Long bookingFlightId = Long.valueOf(id);
 
-            FlightReservation flightReservation = flightReservationService.updateFlightReservation(reservationFlightId, updFlightReservationDTO);
+            FlightReservation flightReservation = flightReservationService.updateFlightReservation(bookingFlightId, updFlightReservationDTO);
 
             if (flightReservation == null) {
-                return ResponseEntity.badRequest().body(ERROR_CODE_NULL);
+                return ResponseEntity.badRequest().body("Cannot edit a flight with the same reservation");
             }
 
-            // Calculo del precio usando el objeto flightReservation actualizado
-            Double totalPrice = flightReservationService.getAllFlightReservations().get(0).getPrice();
+            Double totalPrice = flightReservation.getPrice();
             return ResponseEntity.ok().body("The total price of the flight is: " + totalPrice);
 
         } catch (IllegalArgumentException e) {
@@ -109,24 +107,24 @@ public class FlightReservationController {
         }
     }
 
-
     @Operation(summary = "Borra una reserva de un vuelo mediante un ID",
             description = "Este metodo maneja la eliminacion de una reserva de vuelo. Devuelve diferentes codigos de respuesta HTTP dependiendo del resultado de la operacion.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Flight reservation deleted successfully."),
             @ApiResponse(responseCode = "400", description = "Invalid request or no flight reservation found with the given ID."),
-            @ApiResponse(responseCode = "500", description = "Server error")})
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @DeleteMapping("/flight-booking/delete/{id}")
-    public ResponseEntity<?> deleteBookFlight(@PathVariable String id) {
+    public ResponseEntity < ? > deleteBookFlight(@PathVariable String id) {
 
-        if (!id.matches("^\\d+$")){
+        if (!id.matches("^\\d+$")) {
             return ResponseEntity.badRequest().body(ERROR_CODE);
         }
         Long flightId = Long.valueOf(id);
-        try{
+        try {
             flightReservationService.deleteFlightReservation(flightId);
             return ResponseEntity.ok().body("Flight reservation deleted successfully.");
-        }catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -136,9 +134,10 @@ public class FlightReservationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Flight reservation found successfully."),
             @ApiResponse(responseCode = "400", description = "Invalid request or no flight reservation found with the given ID."),
-            @ApiResponse(responseCode = "500", description = "Server error")})
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @GetMapping("/flight-booking/get/{id}")
-    public ResponseEntity<?> getBookFlight(@PathVariable String id) {
+    public ResponseEntity < ? > getBookFlight(@PathVariable String id) {
         try {
             if (!id.matches("^\\d+$")) {
                 return ResponseEntity.badRequest().body(ERROR_CODE);
@@ -153,7 +152,6 @@ public class FlightReservationController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
 
     public String validator(FlightReservationDTO flightReservationDTO) {
         if (flightReservationDTO.getDate() == null) {
@@ -177,7 +175,7 @@ public class FlightReservationController {
         return validatorUserFlight(flightReservationDTO.getPassengers());
     }
 
-    private String validatorUserFlight(List<User> users) {
+    private String validatorUserFlight(List < User > users) {
         if (users == null || users.isEmpty()) {
             return "User information is required";
         }

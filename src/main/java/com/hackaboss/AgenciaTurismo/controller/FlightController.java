@@ -25,9 +25,10 @@ public class FlightController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Flight created successfully."),
             @ApiResponse(responseCode = "400", description = "Invalid flight data or the flight creation date cannot be in the past."),
-            @ApiResponse(responseCode = "500", description = "Server error")})
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @PostMapping("/flight/new")
-    public ResponseEntity<?> createFlight(@RequestBody FlightDTO flightDto) {
+    public ResponseEntity < ? > createFlight(@RequestBody FlightDTO flightDto) {
         try {
             String arrival = flightDto.getArrival();
             String departure = flightDto.getDeparture();
@@ -55,12 +56,13 @@ public class FlightController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of all flights."),
             @ApiResponse(responseCode = "400", description = "Invalid request or no flights found."),
-            @ApiResponse(responseCode = "500", description = "Server error")})
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @GetMapping("/flights")
-    public ResponseEntity<?> getAllFlights() {
+    public ResponseEntity < ? > getAllFlights() {
 
         try {
-            List<Flight> flights = flightService.getAllFlights();
+            List < Flight > flights = flightService.getAllFlights();
             return ResponseEntity.ok().body(flights);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -72,9 +74,10 @@ public class FlightController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Flight information."),
             @ApiResponse(responseCode = "400", description = "Invalid request or no flight found."),
-            @ApiResponse(responseCode = "500", description = "Server error")})
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @GetMapping("/flights/{id}")
-    public ResponseEntity<?> getFlightById(@PathVariable String id) {
+    public ResponseEntity < ? > getFlightById(@PathVariable String id) {
         try {
             if (!id.matches("\\d+")) {
                 return ResponseEntity.badRequest().body("Please enter a valid hotel ID (numbers only)");
@@ -94,21 +97,23 @@ public class FlightController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Flight deleted successfully."),
             @ApiResponse(responseCode = "400", description = "Invalid request or no flight found."),
-            @ApiResponse(responseCode = "500", description = "Server error")})
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @DeleteMapping("/flights/{id}")
-    public ResponseEntity<?> deleteFlightById(@PathVariable String id) {
+    public ResponseEntity < ? > deleteFlightById(@PathVariable String id) {
+
         try {
             if (!id.matches("\\d+")) {
-                return ResponseEntity.badRequest().body("Please enter a valid hotel ID (numbers only)");
+                return ResponseEntity.badRequest().body("Please enter a valid flight ID (numbers only)");
             }
-            Long flightID = Long.valueOf(id);
+            Long flightIdDelete = Long.valueOf(id);
 
-            Flight flight = flightService.getFlightById(flightID);
-
-            return ResponseEntity.ok().body(flight);
+            flightService.deleteFlightById(flightIdDelete);
+            return ResponseEntity.ok().body("Flight deleted");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+
     }
 
     @Operation(summary = "Obtener vuelos por la localizacion y fecha de disponibilidad. Devuelve diferentes codigos de respuesta HTTP dependiendo de la operacion.",
@@ -116,29 +121,30 @@ public class FlightController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of all flights."),
             @ApiResponse(responseCode = "400", description = "Invalid request or no flights found."),
-            @ApiResponse(responseCode = "500", description = "Server error")})
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @GetMapping("/flights/search")
-    public ResponseEntity<?> getAllFlightsByPlaceAndDates(@RequestParam LocalDate avaliableDateFrom,
-                                                          @RequestParam LocalDate avaliableDateTo,
-                                                          @RequestParam String arrival,
-                                                          @RequestParam String departure) {
+    public ResponseEntity < ? > getAllFlightsByPlaceAndDates(@RequestParam LocalDate avaliableDateFrom,
+                                                             @RequestParam LocalDate avaliableDateTo,
+                                                             @RequestParam String arrival,
+                                                             @RequestParam String departure) {
         try {
-            List<Flight> flights = flightService.getAllFlightsByLocationAndDate(avaliableDateFrom, avaliableDateTo, arrival, departure);
+            List < Flight > flights = flightService.getAllFlightsByLocationAndDate(avaliableDateFrom, avaliableDateTo, arrival, departure);
             return ResponseEntity.ok().body(flights);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-
     @Operation(summary = "Edita un vuelo por su ID",
             description = "Este metodo permite editar un vuelo por su ID. Devuelve diferentes codigos de respuesta HTTP dependiendo de la operacion.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Flight updated successfully."),
             @ApiResponse(responseCode = "400", description = "Invalid request or no flight found."),
-            @ApiResponse(responseCode = "500", description = "Server error")})
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @PutMapping("/flights/edit/{id}")
-    public ResponseEntity<?> editFlightById(@PathVariable String id, @RequestBody FlightDTO flightDTO) {
+    public ResponseEntity < ? > editFlightById(@PathVariable String id, @RequestBody FlightDTO flightDTO) {
 
         try {
             if (!id.matches("^\\d+$")) {
@@ -152,10 +158,7 @@ public class FlightController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-
     }
-
     // Errors
-    private static final String ERROR_CODE ="Please enter a valid hotel ID || Use only numbers please.";
+    private static final String ERROR_CODE = "Please enter a valid hotel ID || Use only numbers please.";
 }
-

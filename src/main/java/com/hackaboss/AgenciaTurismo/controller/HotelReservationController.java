@@ -14,10 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/agency")
@@ -51,10 +49,11 @@ public class HotelReservationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Hotel reservation created successfully."),
             @ApiResponse(responseCode = "400", description = "Invalid hotel reservation data"),
-            @ApiResponse(responseCode = "500", description = "Server error")})
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @PostMapping("/hotel-booking/new")
-    public ResponseEntity<?> createHotelReservation(@RequestBody HotelReservationDTO hotelReservationDTO) {
-// Validar la fecha y otros datos antes de intentar crear la reserva
+    public ResponseEntity < ? > createHotelReservation(@RequestBody HotelReservationDTO hotelReservationDTO) {
+        // Validar la fecha y otros datos antes de intentar crear la reserva
         String validation = valitadeBookingDate(hotelReservationDTO);
 
         if (validation != null) {
@@ -66,15 +65,15 @@ public class HotelReservationController {
         String roomType = hotelReservationDTO.getRoomType();
         int maxPeopleAllowed = 0;
 
-        if (roomType.equalsIgnoreCase("doble")) {
-            maxPeopleAllowed = 2;
-        } else if (roomType.equalsIgnoreCase("triple")) {
-            maxPeopleAllowed = 3;
-        } else if (roomType.equalsIgnoreCase("individual")) {
+        if (roomType.equalsIgnoreCase("Individual")) {
             maxPeopleAllowed = 1;
+        } else if (roomType.equalsIgnoreCase("Doble")) {
+            maxPeopleAllowed = 2;
+        } else if (roomType.equalsIgnoreCase("Triple")) {
+            maxPeopleAllowed = 3;
         } else {
             // Tipo de habitación no reconocido
-            return ResponseEntity.badRequest().body("Invalid room type. Unable to complete the reservation.");
+            return ResponseEntity.badRequest().body("Invalid room type. Unable to complete the reservation || (Individual, Doble, Triple).");
         }
 
         // Verificar si la cantidad de personas es mayor que la permitida
@@ -90,7 +89,7 @@ public class HotelReservationController {
             int nights = (int) ChronoUnit.DAYS.between(hotelReservationDTO.getDateFrom(), hotelReservationDTO.getDateTo());
 
             // Buscamos el precio de la habitación a través del hotel y comprobamos que la habitación esté en el hotel
-            List<Room> rooms = roomService.getAllRooms();
+            List < Room > rooms = roomService.getAllRooms();
 
             // Buscamos la habitación correspondiente al tipo y al hotel
             double totalPrice = rooms.stream()
@@ -116,9 +115,10 @@ public class HotelReservationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Hotel reservation deleted successfully."),
             @ApiResponse(responseCode = "400", description = "Invalid request or no hotel reservation found with the given ID."),
-            @ApiResponse(responseCode = "500", description = "Server error")})
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @DeleteMapping("/hotel-booking/delete/{id}")
-    public ResponseEntity<?> deleteBookHotel(@PathVariable String id) {
+    public ResponseEntity < ? > deleteBookHotel(@PathVariable String id) {
 
         if (!id.matches("\\d+")) {
             return ResponseEntity.badRequest().body(ERROR_CODE);
@@ -129,7 +129,7 @@ public class HotelReservationController {
         try {
             hotelReservationService.deleteReservation(hotelReservationID);
             return ResponseEntity.ok().body("Reservation deleted");
-        }catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
@@ -141,11 +141,12 @@ public class HotelReservationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of all hotel reservations."),
             @ApiResponse(responseCode = "400", description = "Invalid request or no hotel reservations found."),
-            @ApiResponse(responseCode = "500", description = "Server error")})
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @GetMapping("/hotel-booking/all")
-    public ResponseEntity<?> getAllReservationsHotels() {
+    public ResponseEntity < ? > getAllReservationsHotels() {
         try {
-            List<HotelReservation> hotelReservations = hotelReservationService.getAllReservations();
+            List < HotelReservation > hotelReservations = hotelReservationService.getAllReservations();
             return ResponseEntity.ok().body(hotelReservations);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -158,16 +159,17 @@ public class HotelReservationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Hotel reservation information."),
             @ApiResponse(responseCode = "400", description = "Invalid request or hotel reservation not found."),
-            @ApiResponse(responseCode = "500", description = "Server error")})
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @GetMapping("/hotel-booking/get/{id}")
-    public ResponseEntity<?> getHotelReservationId(@PathVariable String id) {
+    public ResponseEntity < ? > getHotelReservationId(@PathVariable String id) {
         try {
             if (!id.matches("\\d+")) {
                 return ResponseEntity.badRequest().body(ERROR_CODE);
             }
             HotelReservation hotelReservation = hotelReservationService.getReservationById(Long.parseLong(id));
             return ResponseEntity.ok().body(hotelReservation);
-        }catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
 
         }
@@ -178,14 +180,15 @@ public class HotelReservationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Hotel reservation updated successfully."),
             @ApiResponse(responseCode = "400", description = "Invalid hotel reservation data or unable to find room."),
-            @ApiResponse(responseCode = "500", description = "Server error")})
+            @ApiResponse(responseCode = "500", description = "Server error")
+    })
     @PutMapping("/hotel-booking/edit/{id}")
-    public ResponseEntity<?> editHotelReservation(@PathVariable String id, @RequestBody UpdHotelReservationDTO hotelReservationDTO) {
+    public ResponseEntity < ? > editHotelReservation(@PathVariable String id, @RequestBody UpdHotelReservationDTO hotelReservationDTO) {
         try {
             if (!id.matches("\\d+")) {
                 return ResponseEntity.badRequest().body(ERROR_CODE);
             }
-            List<Room> rooms = roomService.getAllRooms();
+            List < Room > rooms = roomService.getAllRooms();
 
             Long bookingId = Long.parseLong(id);
 
@@ -199,7 +202,6 @@ public class HotelReservationController {
             LocalDate dateTo = hotelReservationDTO.getDateTo();
 
             int nights = (int) ChronoUnit.DAYS.between(dateFrom, dateTo);
-
 
             double totalPrice = rooms.stream()
                     .filter(room -> room.getHotel().getCodHotel().equals(hotelReservation.getCodHotel()) &&
@@ -225,7 +227,7 @@ public class HotelReservationController {
                 return ResponseEntity.ok().body(message);
             }
 
-            // Actualización de las noches y el precio
+            // update de las noches y el precio
             hotelReservation.setNights(nights);
             hotelReservation.setPrice(totalPrice);
 
@@ -233,8 +235,7 @@ public class HotelReservationController {
 
             return ResponseEntity.ok().body(message);
 
-
-        } catch(IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -267,15 +268,19 @@ public class HotelReservationController {
     }
 
     private String getReservationDetails(HotelReservation bookHotel) {
-        // Devuelvo la información específica de la reserva
-        return "Reservation details: " +
-                "\nHotel Code: " + bookHotel.getCodHotel() +
-                "\nRoom Type: " + bookHotel.getRoomType() +
-                "\nNights: " + bookHotel.getNights() +
-                "\nTotal Price: " + bookHotel.getPrice();
+        StringBuilder details = new StringBuilder();
+        details.append("Reservation details:")
+                .append("\nHotel Code: ").append(bookHotel.getCodHotel())
+                .append("\nRoom Type: ").append(bookHotel.getRoomType())
+                .append("\nNights: ").append(bookHotel.getNights())
+                .append("\nTotal Price: ").append(bookHotel.getPrice());
+
+        // Devolver la cadena construida
+        return details.toString();
     }
 
-    private String valitadeBookingUser(List<User> users) {
+
+    private String valitadeBookingUser(List < User > users) {
 
         if (users == null || users.isEmpty()) {
             return "User information is required";
