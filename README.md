@@ -1,7 +1,7 @@
 # Prueba técnica - Agencia de viajes
 
-**Credenciales para el empleado:**<br>
-**- Usuario: hackaboss**<br>
+**Credenciales para el empleado:**<br&gt;
+**- Usuario: hackaboss**<br&gt;
 **- Contrasena: 1234**
 
 Se está desarrollando una aplicación que simula la gestión de una agencia de viajes. En esta aplicación, se manejan diferentes hoteles, y cada hotel tiene varios tipos de habitaciones, como individual, doble y triple. Según las instrucciones, se debe crear un hotel por cada tipo de habitación disponible en ese hotel. Por otro lado, los vuelos se crean solo de ida, si el usuario quiere otro vuelo de vuelta, tendrá que crear otro con otro código diferente al de ida con los nuevos datos de la reserva.
@@ -23,17 +23,17 @@ http://localhost:8080/agency/hotels/new
 
 En este endpoint se van a generar todos los hoteles mediante la siguiente request:
 
-```json
+'''json
 {
-    "name": "Hotel Alda",
-    "location": "Sada",
-    "roomPrice": 80,
-    "roomType": "Individual",
-    "avaliableDateFrom": "2024-05-24",
-    "avaliableDateTo": "2024-05-30"
+"name": "Hotel Alda",
+"location": "Sada",
+"roomPrice": 80,
+"roomType": "Individual",
+"avaliableDateFrom": "2024-05-24",
+"avaliableDateTo": "2024-05-30"
 }
 
-```
+'''
 En el contexto mencionado anteriormente, la estrategia consiste en generar un hotel para cada tipo de habitación disponible. Esto implica que al realizar una solicitud para crear un hotel, se incluirán también los datos asociados a cada tipo de habitación. De esta manera, al crear el hotel, la información se distribuirá automáticamente en las respectivas tablas de la base de datos, asegurando que los datos de cada habitación estén debidamente registrados y asociados al hotel correspondiente.
 
 La response de la request anterior es la siguiente:
@@ -65,7 +65,7 @@ En el caso de que el hotel o los hoteles que estuviésemos buscando no estuviese
 ### Método GET por ID.
 ***
 
-Este método simplemente busca hoteles por el ID, en el caso de que no encuentre el hotel por el ID seleccionado, nos dará un error 
+Este método simplemente busca hoteles por el ID, en el caso de que no encuentre el hotel por el ID seleccionado, nos dará un error
 
 http://localhost:8080/agency/hotels/1
 
@@ -78,14 +78,14 @@ Si no encuentra un hotel, obtenemos la siguiente respuesta:
 
 En este método solo podemos actualizar el nombre o la localización del hotel. La actualización se realiza a través del ID del hotel
 
-```json
+'''json
 {
 
-  "name": "Hotel Betanzos",
-  "location": "Betanzos"
+"name": "Hotel Betanzos",
+"location": "Betanzos"
 }
 
-```
+'''
 Si todo ha salido correcto, aparte de actualizarse el nombre y la localización, también se actualizará el código alfanumérico del hotel
 
 Si el hotel que intentamos actualizar no se encuentra en la base de datos, nos marcará el siguiente error:
@@ -106,7 +106,7 @@ En el caso de que intentemos borrar un hotel que no se encuentra en la base de d
 ## Vuelos
 ****
 
-Debido a que los endpoints son practicamente los mismos a los de los hoteles, solo se usaran screenshots si es realmente necesario explicar algo.
+Debido a que los endpoints son prácticamente los mismos a los de los hoteles, solo se usaran screenshots si es realmente necesario explicar algo.
 
 ### Método POST (Creación de vuelo).
 ***
@@ -115,14 +115,14 @@ Debido a que los endpoints son practicamente los mismos a los de los hoteles, so
 
 Este método permite la creación de un vuelo, simplemente se ingresan los diferentes parámetros mediante el JSON.
 
-```json
+'''json
 {
 
-  "arrival": "Sada",
-  "departure": "Madrid",
-  "date": "2024-05-24"
+"arrival": "Sada",
+"departure": "Madrid",
+"date": "2024-05-24"
 }
-```
+'''
 
 Hago el vuelo de una manera para que concuerde con el hotel creado anteriormente.
 
@@ -137,19 +137,19 @@ http://localhost:8080/agency/flights
 
 Mediante este método obtenemos todos los vuelos que se encuentran disponibles en la base de datos.
 
-```json
+'''json
 [
-    {
-        "id": 1,
-        "codFlight": "SA-6190",
-        "departure": "Madrid",
-        "arrival": "Sada",
-        "date": "2024-05-24",
-        "lastUpdate": null,
-        "deleted": false
-    }
+{
+"id": 1,
+"codFlight": "SA-6190",
+"departure": "Madrid",
+"arrival": "Sada",
+"date": "2024-05-24",
+"lastUpdate": null,
+"deleted": false
+}
 ]
-```
+'''
 
 En este caso solo se encuentra un vuelo en la base de datos.
 
@@ -160,23 +160,23 @@ En este método obtenemos los vuelos mediante un rango de fechas, origen, destin
 
 http://localhost:8080/agency/flights/search?avaliableDateFrom=2024-05-24&avaliableDateTo=2024-05-25&arrival=Sada&departure=Madrid
 
-```json
+'''json
 [
-    {
-        "id": 1,
-        "codFlight": "SA-6190",
-        "departure": "Madrid",
-        "arrival": "Sada",
-        "date": "2024-05-24",
-        "lastUpdate": null,
-        "deleted": false
-    }
+{
+"id": 1,
+"codFlight": "SA-6190",
+"departure": "Madrid",
+"arrival": "Sada",
+"date": "2024-05-24",
+"lastUpdate": null,
+"deleted": false
+}
 ]
-```
+'''
 
 http://localhost:8080/agency/flights/search?avaliableDateFrom=2024-05-20&avaliableDateTo=2024-05-25&arrival=Coruna&departure=Madrid
 
-Y si es incorrecto obtenemos la respuesta indicándonos que está mal:
+Y si es incorrecto, obtenemos la respuesta indicándonos que está mal:
 
 No flights match the specified criteria in the database.
 
@@ -191,17 +191,16 @@ Flight with ID 12 not found in the database.
 
 ### Método PUT(Método para actualizar los vuelos)
 ***
-
 En este método lo que vamos a hacer es actualizar los vuelos, en este caso lo que vamos a actualizar es:
 
-```json
+'''json
 {
-   "arrival": "Sada",
-   "departure": "Madrid",
-   "date": "2024-04-24"
+"arrival": "Sada",
+"departure": "Madrid",
+"date": "2024-04-24"
 }
-```
-Y como podemos comprobar mediante él antes y el después los datos han sido actualizados sin ningún problema.
+'''
+Y como podemos comprobar mediante él antes y él después, los datos han sido actualizados sin ningún problema.
 
 De nuevo, si se intenta actualizar un vuelo inexistente, obtendremos como respuesta la siguiente response:
 
@@ -224,3 +223,302 @@ The flight is not found in the database.
 
 ## Reserva de vuelos
 ****
+
+El funcionamiento de la resserva de vuelos es muy parecido a lo que llevamos hecho hasta ahora. Por ende obtare por incluir imágenes cuando sea estrictamente necesario.
+
+## EndPoints:
+
+### Método POST (creación de la reserva)
+***
+
+http://localhost:8080/agency/flight-booking/new
+
+'''json
+{
+"date": "2024-04-24",
+"departure": "Madrid",
+"arrival": "Sada",
+"codFlight": "SA-6190",
+"seatType": "Economy",
+"price": 60,
+"passengers": [
+{
+"name": "Diego",
+"lastName": "Millan",
+"email": "diego@diego.com",
+"passport": "DM123456B",
+"age": 27
+}
+]
+}
+'''
+El precio en este caso se estipula que es de 60 euros, pero más adelante veremos que "Economy = 60 euros" y "Premium = 120 euros".
+
+Podemos hacer una reserva del mismo vuelo, pero con otra persona diferente, en el caso de que volvamos a ejecutar el mismo JSON obtendremos el siguiente mensaje:
+
+At least one user already has an active reservation for the specified flight on the specified date.
+
+### Método GET (devuelve todas las reservas)
+***
+
+http://localhost:8080/agency/flight-booking/all
+
+En este caso, las reservas solo podrán ser vistas por el empleado autenticado, no por un usuario normal. La response que obtenemos es la siguiente:
+
+'''json
+[
+{
+"id": 1,
+"date": "2024-04-24",
+"departure": "Madrid",
+"arrival": "Sada",
+"codFlight": "SA-6190",
+"peopleQ": 1,
+"seatType": "Economy",
+"price": 60.0,
+"passengers": [
+{
+"id": 1,
+"name": "Diego",
+"lastName": "Millan",
+"email": "diego@diego.com",
+"passport": "DM123456B",
+"age": 27,
+"flightReservations": [
+1
+],
+"hotels": []
+}
+],
+"flight": {
+"id": 1,
+"codFlight": "SA-6190",
+"departure": "Madrid",
+"arrival": "Sada",
+"date": "2024-04-24",
+"lastUpdate": "2024-01-15",
+"deleted": true
+},
+"lastUpdate": null,
+"deleted": false
+}
+]
+'''
+### Método GET (este método nos devuelve la reserva por ID)
+***
+
+http://localhost:8080/agency/flight-booking/get/{id}
+
+En este se va a buscar una reserva, y como podemos observar se va a realizar mediante un ID.
+
+En el caso de que intentemos buscar por un ID que no se encuentre en la base de datos, obtendremos el siguiente error:
+
+The flight reservation with ID 2 is not found in the database.
+
+### Método PUT (método para actualizar a través del ID)
+***
+
+En este método podremos actualizar a través del ID la categoría en la que el pasajero va a viajar, tenemos dos opciones comentadas anteriormente:
+
+"Economy = 60 euros" y "Premium = 120 euros".
+
+Este cambio se refleja automáticamente en la base de datos.
+
+Base de datos sin actualizar:
+
+Ahora la tabla actualizada:
+
+Este cambio se realiza mediante el siguiente JSON:
+
+'''json
+{
+"seatType": "Premium"
+}
+
+La respuesta que obtenemos si ponemos el "seatType" incorrecto es la siguiente:
+
+Invalid seat type. Choose between 'Economy' and 'Premium'.
+
+### Método DELETE (método para eliminar un vuelo)
+***
+
+Es prácticamente idéntica a la hora de borrar un vuelo o un hotel. Simplemente, buscaremos por el ID correspondiente y le daremos a eliminar.
+
+Si el ID no existe en la BBDD obtenemos la siguiente response:
+
+The flight reservation with ID 3 is not found in the database.
+
+## Reserva de Hoteles
+***
+
+## EndPoints:
+
+### Método POST (método para crear una reserva)
+
+En este método igual que anteriormente también se crea el usuario, en caso de que este ya se encuentre creado no se volverán a crear.
+
+En el caso de que la habitación del hotel no concuerde con la habitación a la hora de hacer una reserva, obtendremos el error:
+
+The specified room for the reservation was not found.
+
+Para crear una reserva debemos obtener el código del hotel correcto, en caso de que no sea el correcto obtendremos el siguiente error:
+
+The specified hotel does not exist or has been deleted.
+
+En el caso de que sea todo correcto, obtendremos la siguiente response:
+
+The total price of the reservation is: 480.0 € (Un cálculo del precio de la habitación por el número de días que la persona se va a alojar en ella).
+
+Tenemos tres tipos de habitaciones principales (Individual, Doble o Triple).
+
+Request usada a la hora de la creacion de la reserva:
+
+'''json
+{
+"dateFrom":"2024-05-24",
+"dateTo": "2024-05-30",
+"location": "Sada",
+"codHotel": "HOAL-4213",
+"roomType": "Individual",
+"hosts": [
+{
+"name": "Diego",
+"lastName": "Millan",
+"email": "diego@diego.com",
+"passport": "DM123456B",
+"age": 27
+}
+]
+}
+'''
+
+### Método GET (Obtener las reservas por el ID)
+***
+
+Este método es idéntico al de la reserva de vuelos, por ende vamos a pasar directamente a la respuesta del JSON:
+
+'''json
+
+"id": 1,
+"codHotel": "HOAL-4213",
+"dateFrom": "2024-05-24",
+"dateTo": "2024-05-30",
+"nights": 6,
+"peopleQ": 1,
+"price": 480.0,
+"roomType": "Individual",
+"users": [
+{
+"id": 1,
+"name": "Diego",
+"lastName": "Millan",
+"email": "diego@diego.com",
+"passport": "DM123456B",
+"age": 27,
+"flightReservations": [
+{
+"id": 1,
+"date": "2024-04-24",
+"departure": "Madrid",
+"arrival": "Sada",
+"codFlight": "SA-6190",
+"peopleQ": 1,
+"seatType": "Premium",
+"price": 120.0,
+"passengers": [
+{
+"id": 1,
+"name": "Diego",
+"lastName": "Millan",
+"email": "diego@diego.com",
+"passport": "DM123456B",
+"age": 27,
+"flightReservations": [
+1
+],
+"hotels": [
+1
+]
+}
+],
+"flight": {
+"id": 1,
+"codFlight": "SA-6190",
+"departure": "Madrid",
+"arrival": "Sada",
+"date": "2024-04-24",
+"lastUpdate": "2024-01-15",
+"deleted": false
+},
+"lastUpdate": "2024-01-15",
+"deleted": false
+}
+],
+"hotels": [
+1
+]
+}
+],
+"hotel": {
+"id": 1,
+"codHotel": "HOAL-4213",
+"hotelName": "Hotel Alda",
+"location": "Sada",
+"lastUpdate": "2024-01-15",
+"room": {
+"id": 1,
+"roomType": "Individual",
+"roomPrice": 80.0,
+"avaliableDateFrom": "2024-05-24",
+"avaliableDateTo": "2024-05-30"
+},
+"booked": true
+},
+"updated": null,
+"deleted": false
+}
+'''
+
+Si la reserva no existe, vamos a obtener el siguiente error:
+
+The reservation with ID 2 does not exist in our database.
+
+## Método GET (Obtener todas las reservas)
+***
+
+Gracias a este método obtendremos todas las reservas que se encuentran en la base de datos. Como actualmente solo hay una reserva, pues mostrara lo mismo que el método anterior de obtener mediante un ID.
+
+## Método PUT (Actualizar la reserva por ID)
+***
+
+Mediante este método vamos a actualizar la información de la reserva, aquí podremos editar dos datos principales, la fecha de inicio y la fecha final
+
+Request:
+'''json
+{
+"dateFrom": "2024-04-10",
+"dateTo": "2024-04-20"
+}
+'''
+
+### Método DELETE (Eliminar reserva)
+***
+
+Este método es muy parecido al borrado de la reserva de vuelos.
+
+Eliminación de una reserva:
+
+En el caso de que estemos intentando borrar una reserva de un hotel que no se encuentre en la base de datos, obtendremos la siguiente respuesta:
+
+The reservation with ID 2 does not exist in the database.
+
+## Posibles mejoras para Sprints futuros
+***
+
+1. Controlar a los usuarios mediante un DNI que fuese único para tener un mayor control sobre el usuario de la página y evitar suplantaciones de identidad.
+
+2. Integrar un sistema de notificaciones para informar a los usuarios sobre confirmaciones de reserva, cambios o cancelaciones.
+
+3. Notificar a los usuarios cuando un hotel o vuelo esté próximo a alcanzar su capacidad máxima.
+
+4. Historial de reservas y actividades.
