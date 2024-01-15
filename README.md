@@ -25,7 +25,6 @@ En este endpoint se van a generar todos los hoteles mediante la siguiente reques
 
 ```json
 {
-
     "name": "Hotel Alda",
     "location": "Sada",
     "roomPrice": 80,
@@ -87,7 +86,6 @@ En este método solo podemos actualizar el nombre o la localización del hotel. 
 }
 
 ```
-
 Si todo ha salido correcto, aparte de actualizarse el nombre y la localización, también se actualizará el código alfanumérico del hotel
 
 Si el hotel que intentamos actualizar no se encuentra en la base de datos, nos marcará el siguiente error:
@@ -104,3 +102,125 @@ Este método se encarga de hacer un borrado lógico, en la base de datos se encu
 En el caso de que intentemos borrar un hotel que no se encuentra en la base de datos, obtendremos el siguiente error:
 
 -The hotel with ID 3 was not found in the database.
+
+## Vuelos
+****
+
+Debido a que los endpoints son practicamente los mismos a los de los hoteles, solo se usaran screenshots si es realmente necesario explicar algo.
+
+### Método POST (Creación de vuelo).
+***
+
+-http://localhost:8080/agency/flight/new
+
+Este método permite la creación de un vuelo, simplemente se ingresan los diferentes parámetros mediante el JSON.
+
+```json
+{
+
+  "arrival": "Sada",
+  "departure": "Madrid",
+  "date": "2024-05-24"
+}
+```
+
+Hago el vuelo de una manera para que concuerde con el hotel creado anteriormente.
+
+La respuesta de este endpoint es la siguiente:
+
+Successfully created flight
+
+### Método GET (obtener la lista de todos los vuelos)
+***
+
+http://localhost:8080/agency/flights
+
+Mediante este método obtenemos todos los vuelos que se encuentran disponibles en la base de datos.
+
+```json
+[
+    {
+        "id": 1,
+        "codFlight": "SA-6190",
+        "departure": "Madrid",
+        "arrival": "Sada",
+        "date": "2024-05-24",
+        "lastUpdate": null,
+        "deleted": false
+    }
+]
+```
+
+En este caso solo se encuentra un vuelo en la base de datos.
+
+### Método GET (obtener la lista de vuelos en función de fechas, lugar de destinos y origen)
+***
+
+En este método obtenemos los vuelos mediante un rango de fechas, origen, destino. En el caso de que sea correcto nos dará la siguiente respuesta:
+
+http://localhost:8080/agency/flights/search?avaliableDateFrom=2024-05-24&avaliableDateTo=2024-05-25&arrival=Sada&departure=Madrid
+
+```json
+[
+    {
+        "id": 1,
+        "codFlight": "SA-6190",
+        "departure": "Madrid",
+        "arrival": "Sada",
+        "date": "2024-05-24",
+        "lastUpdate": null,
+        "deleted": false
+    }
+]
+```
+
+http://localhost:8080/agency/flights/search?avaliableDateFrom=2024-05-20&avaliableDateTo=2024-05-25&arrival=Coruna&departure=Madrid
+
+Y si es incorrecto obtenemos la respuesta indicándonos que está mal:
+
+No flights match the specified criteria in the database.
+
+### Método GET(método para obtener los vuelos por ID)
+***
+
+http://localhost:8080/agency/flights/{id}
+
+En este caso obtenemos un vuelo mediante su ID. En el caso de no encontrar un vuelo por su correspondiente ID obtenemos la siguiente response:
+
+Flight with ID 12 not found in the database.
+
+### Método PUT(Método para actualizar los vuelos)
+***
+
+En este método lo que vamos a hacer es actualizar los vuelos, en este caso lo que vamos a actualizar es:
+
+```json
+{
+   "arrival": "Sada",
+   "departure": "Madrid",
+   "date": "2024-04-24"
+}
+```
+Y como podemos comprobar mediante él antes y el después los datos han sido actualizados sin ningún problema.
+
+De nuevo, si se intenta actualizar un vuelo inexistente, obtendremos como respuesta la siguiente response:
+
+Flight with ID 3 not found in the database.
+
+### Método DELETE(Método para eliminar los vuelos)
+***
+
+http://localhost:8080/agency/flights/{id}
+
+Este método se encarga de hacer un borrado lógico, en la base de datos se encuentran dos columnas, una llamada (is_Deleted) y (last_deleted_date), en las cuales mediante una flag (0 - 1) nos permiten observar si el hotel se encuentra borrado o no. Para eliminar un vuelo se hace mediante su ID. En el caso de que un vuelo tenga una reserva, este no va a poder ser eliminado hasta que se elimine primero la reserva.
+
+Si todo ha salido correcto, la respuesta que obtendremos será la siguiente:
+
+Flight deleted
+
+En el caso de que intentemos borrar un vuelo que no se encuentra en la base de datos, la siguiente response:
+
+The flight is not found in the database.
+
+## Reserva de vuelos
+****
