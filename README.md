@@ -215,6 +215,14 @@ En este método lo que vamos a hacer es actualizar los vuelos, en este caso lo q
 ```
 Y como podemos comprobar mediante él antes y él después, los datos han sido actualizados sin ningún problema.
 
+Antes
+![delete vuelo](before_flight_update.png)
+
+Despues
+
+![delete vuelo](media/after_flight_update.png)
+
+
 De nuevo, si se intenta actualizar un vuelo inexistente, obtendremos como respuesta la siguiente response:
 
 >Flight with ID 3 not found in the database.
