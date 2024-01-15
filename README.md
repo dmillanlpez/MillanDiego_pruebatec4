@@ -5,6 +5,8 @@
 1. **Usuario:** `hackaboss`
 2. **Contraseña:** `1234`
 
+Las credenciales son las mismas para el Swagger!
+
 Se está desarrollando una aplicación que simula la gestión de una agencia de viajes. En esta aplicación, se manejan diferentes hoteles, y cada hotel tiene varios tipos de habitaciones, como individual, doble y triple. Según las instrucciones, se debe crear un hotel por cada tipo de habitación disponible en ese hotel. Por otro lado, los vuelos se crean solo de ida, si el usuario quiere otro vuelo de vuelta, tendrá que crear otro con otro código diferente al de ida con los nuevos datos de la reserva.
 
 # Explicación de la aplicación
