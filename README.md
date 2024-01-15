@@ -61,13 +61,13 @@ Este método nos permite devolver hoteles mediante un rango de fechas, lugar y b
 
 http://localhost:8080/agency/hotels/search?avaliableDateFrom=2024-05-10&avaliableDateTo=2024-05-30&location=Sada&isBooked=false
 
-![get all filtro](hotel_filtrado_true.png)
+![get all filtro](media/hotel_filtrado_true.png)
 
 En el caso de que el hotel o los hoteles que estuviésemos buscando no estuviesen en las susodichas fechas, recibiríamos como respuesta lo siguiente:
 
 -There are no hotels with these criteria in the database.
 
-![get all false](get_all_hotels_location_FALSE.png)
+![get all false](media/get_all_hotels_location_FALSE.png)
 
 ### Método GET por ID.
 ***
@@ -76,7 +76,7 @@ Este método simplemente busca hoteles por el ID, en el caso de que no encuentre
 
 http://localhost:8080/agency/hotels/1
 
-![get por id](get_hotel_ID.png)
+![get por id](media/get_hotel_ID.png)
 
 Si no encuentra un hotel, obtenemos la siguiente respuesta:
 
