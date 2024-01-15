@@ -61,7 +61,7 @@ Este método nos permite devolver hoteles mediante un rango de fechas, lugar y b
 
 http://localhost:8080/agency/hotels/search?avaliableDateFrom=2024-05-10&avaliableDateTo=2024-05-30&location=Sada&isBooked=false
 
-![get all filtro](get_all_hotels_location_fecha.png)
+![get all filtro](hotel_filtrado_true.png)
 
 En el caso de que el hotel o los hoteles que estuviésemos buscando no estuviesen en las susodichas fechas, recibiríamos como respuesta lo siguiente:
 
