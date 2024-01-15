@@ -43,7 +43,7 @@ En el contexto mencionado anteriormente, la estrategia consiste en generar un ho
 
 La response de la request anterior es la siguiente:
 
--Successfully created the hotel.
+>Successfully created the hotel.
 
 ### Método GET (Listar todos los hoteles)
 ***
