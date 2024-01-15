@@ -24,6 +24,7 @@ http://localhost:8080/agency/hotels/new
 
 En este endpoint se van a generar todos los hoteles mediante la siguiente request:
 
+```json
 {
   "name": "Hotel Alda",
   "location": "Sada",
@@ -32,6 +33,7 @@ En este endpoint se van a generar todos los hoteles mediante la siguiente reques
   "avaliableDateFrom": "2024-05-24",
   "avaliableDateTo": "2024-05-30"
 }
+```
 
 En el contexto mencionado anteriormente, la estrategia consiste en generar un hotel para cada tipo de habitación disponible. Esto implica que al realizar una solicitud para crear un hotel, se incluirán también los datos asociados a cada tipo de habitación. De esta manera, al crear el hotel, la información se distribuirá automáticamente en las respectivas tablas de la base de datos, asegurando que los datos de cada habitación estén debidamente registrados y asociados al hotel correspondiente.
 
