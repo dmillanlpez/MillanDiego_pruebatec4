@@ -216,7 +216,8 @@ En este método lo que vamos a hacer es actualizar los vuelos, en este caso lo q
 Y como podemos comprobar mediante él antes y él después, los datos han sido actualizados sin ningún problema.
 
 Antes
-![delete vuelo](before_flight_update.png)
+
+![delete vuelo](media/before_flight_update.png)
 
 Despues
 
