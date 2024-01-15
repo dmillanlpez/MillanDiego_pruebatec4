@@ -18,6 +18,7 @@ Explicación de cada uno de los endpoints de la aplicación
 
 ### Método POST (Este método tiene que estar autenticado el empleado)
 ***
+![create_hotel] (media/new hotel.png)
 
 http://localhost:8080/agency/hotels/new
 
