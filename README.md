@@ -106,7 +106,7 @@ Hotel not found in the database.
 
 http://localhost:8080/agency/hotels/1
 
-![borrado por id](Delete_hotel_ID.png)
+![borrado por id](media/Delete_hotel_ID.png)
 
 Este método se encarga de hacer un borrado lógico, en la base de datos se encuentran dos columnas, una llamada (is_Deleted) y (last_deleted_date), en las cuales mediante una flag (0 - 1) nos permiten observar si el hotel se encuentra borrado o no. Para eliminar un hotel se hace mediante su ID. En el caso de que un hotel tenga una reserva, este no va a poder ser eliminado hasta que se elimine primero la reserva.
 
@@ -222,6 +222,10 @@ Flight with ID 3 not found in the database.
 
 http://localhost:8080/agency/flights/{id}
 
+![delete vuelo](media/delete_VUELO.png)
+
+![delete vuelo](media/after_flight_update.png)
+
 Este método se encarga de hacer un borrado lógico, en la base de datos se encuentran dos columnas, una llamada (is_Deleted) y (last_deleted_date), en las cuales mediante una flag (0 - 1) nos permiten observar si el hotel se encuentra borrado o no. Para eliminar un vuelo se hace mediante su ID. En el caso de que un vuelo tenga una reserva, este no va a poder ser eliminado hasta que se elimine primero la reserva.
 
 Si todo ha salido correcto, la respuesta que obtendremos será la siguiente:
@@ -336,8 +340,11 @@ En este método podremos actualizar a través del ID la categoría en la que el 
 Este cambio se refleja automáticamente en la base de datos.
 
 Base de datos sin actualizar:
+![delete vuelo](media/bbdd_economy_update.png)
 
 Ahora la tabla actualizada:
+
+![delete vuelo](media/bbdd_premium_update.png)
 
 Este cambio se realiza mediante el siguiente JSON:
 
@@ -354,6 +361,8 @@ Invalid seat type. Choose between 'Economy' and 'Premium'.
 ***
 
 Es prácticamente idéntica a la hora de borrar un vuelo o un hotel. Simplemente, buscaremos por el ID correspondiente y le daremos a eliminar.
+
+![delete vuelo](media/flight_ress_deleted.png)
 
 Si el ID no existe en la BBDD obtenemos la siguiente response:
 
